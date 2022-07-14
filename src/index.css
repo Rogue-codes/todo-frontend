@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@400;500;600;700;800;900&family=Archivo+Black&family=Barlow:wght@300;400;500;600;700;800;900&family=Bellefair&family=Cormorant+Unicase:wght@700&family=Dancing+Script:wght@400;500;700&family=Gugi&family=Koulen&family=Lato:wght@400;700;900&family=Oxygen:wght@300;400;700&family=PT+Serif:wght@400;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Radio+Canada:wght@300;500;600;700&family=Raleway:wght@300;400;500;600;700;800;900&family=Roboto+Condensed&family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900&family=Roboto:wght@400;500;700;900&family=Rubik+Wet+Paint&family=Rubik:wght@600&family=Source+Sans+Pro:wght@400;600;700;900&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
