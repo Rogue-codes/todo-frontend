@@ -1,11 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { todoDelete, todoFetch, todoToggle } from '../redux/todoSlice'
-import moment from 'moment'
-import {AiFillDelete,AiFillEdit} from 'react-icons/ai'
-import {BsFillCheckCircleFill} from 'react-icons/bs'
+import {todoFetch} from '../redux/todoSlice'
+import Tr from './Tr'
 
 
 const Container = styled.div`
@@ -36,6 +34,7 @@ const Table = styled.table`
         font-size: 1vw;
     }
     tbody{
+        position: relative;
         tr{
             background:#fff;
             height: 6vh; 
@@ -45,8 +44,8 @@ const Table = styled.table`
             .ops{
                 display: flex;
                 justify-content: center;
-                gap: 15%;
-                padding: 4%;
+                align-items: center;
+                height: 8vh;
             }
         }
     }
@@ -55,19 +54,20 @@ const Table = styled.table`
 function TableComponent({setTodo}) {
     const todoState = useSelector((state) => state.todos)
     const dispatch = useDispatch()
+    // const [showModal, setShowModal]= useState(false)
+
+    // const OpenShowModal = (_id) => {
+    //     dispatch(openModal(_id))
+    //     setShowModal(showModal)
+    // }
 
     useEffect(()=>{
         dispatch(todoFetch())
     },[dispatch])
 
-    const handleDelete =(_id) => {
-        dispatch(todoDelete(_id))
-    }
 
-    const handleToggleComplete = (_id) => {
-        dispatch(todoToggle(_id))
-    }
-  return (
+
+return (
     <Container>
          <Table>
             <thead>
@@ -90,25 +90,19 @@ function TableComponent({setTodo}) {
                     (<p>An error occurred, can't get task</p>):
                     
                     (
-                        todoState.todos.map((td)=><tr key={td._id}>
-                        <td>{td.name}</td>
-                        <td>{td.author}</td>
-                        <td>{td.priority}</td>
-                        <td>{td.isComplete ? 'done' : "not done"}</td>
-                        <td>{moment(td.date).fromNow()}</td>
-                        <td></td>
-                        <td className='ops'>
-                            <AiFillDelete size='1rem' cursor='pointer' color='red' onClick={()=>handleDelete(td._id)}/>
-                            <AiFillEdit size='1rem' cursor='pointer' color='blue' onClick={()=>setTodo(td)}/>
-                            <BsFillCheckCircleFill size='1rem' cursor='pointer' color='green' onClick={()=>handleToggleComplete(td._id)}/>
-                        </td>
-                    </tr> 
+                        todoState.todos?.map((td)=>
+                        
+                    <Tr key={td.id} td={td} setTodo={setTodo}/>
                         )
                     )
                 }
 
+                
+
             </tbody>
         </Table>
+
+
         
     </Container>
   )
