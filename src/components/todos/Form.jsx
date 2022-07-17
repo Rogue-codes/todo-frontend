@@ -103,13 +103,13 @@ function Form({todo,setTodo}) {
   return (
     <FormCont onSubmit={handleSubmit}>
         <input value={todo.name} type="text" placeholder="task name" onChange={(e)=>setTodo({...todo, name: e.target.value})} />
-        <input value={todo.author} type="text" placeholder="Author" onChange={(e)=>setTodo({...todo, author: e.target.value})}/>
+        <input value={todo.author} type="text" placeholder="description" onChange={(e)=>setTodo({...todo, author: e.target.value})}/>
         <select value={todo.priority} name="" id="" onChange={(e)=>setTodo({...todo, priority: e.target.value})}>
             <option value="">priority</option>
             <option value="critical">critical</option>
             <option value="normal">normal</option>
         </select>
-        <input value={todo.dueDate} type="date" placeholder='date created' onChange={(e)=>setTodo({...todo, dueDate: e.target.value})} />
+        <input value={todo.dateDue} type="date" placeholder='date created' onChange={(e)=>setTodo({...todo, dateDue: e.target.value})} />
         <button>{todo._id ? 'update task' : 'add task'}</button>
 
         <Modal ds={pending ? 'flex' : 'none'}>

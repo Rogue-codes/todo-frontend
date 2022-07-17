@@ -15,7 +15,7 @@ const initialState = {
     deleteTodoError:'',
     toggleTodoStatus:'',
     toggleTodoError:'',
-    modal: false
+    dateDue:[]
 }
 
 export const todoPost = createAsyncThunk(
@@ -91,9 +91,7 @@ const todoSlice = createSlice({
     name: 'todo',
     initialState,
     reducers:{
-        openModal : (state, action) => {           
-            state.modal = !state.modal
-        },
+
     },
     extraReducers:{
         [todoPost.pending]: (state, action) => {
@@ -308,5 +306,4 @@ const todoSlice = createSlice({
     }
 })
 
-export const {openModal} = todoSlice.actions
 export default todoSlice.reducer
