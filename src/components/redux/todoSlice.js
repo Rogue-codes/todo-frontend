@@ -15,7 +15,7 @@ const initialState = {
     deleteTodoError:'',
     toggleTodoStatus:'',
     toggleTodoError:'',
-    dateDue:[]
+    filterStatus: "false",
 }
 
 export const todoPost = createAsyncThunk(
@@ -91,7 +91,9 @@ const todoSlice = createSlice({
     name: 'todo',
     initialState,
     reducers:{
-
+        filterActiveAndInActive:(state, action)=>{
+            state.filterStatus = action.payload
+        }
     },
     extraReducers:{
         [todoPost.pending]: (state, action) => {
@@ -305,5 +307,7 @@ const todoSlice = createSlice({
         },
     }
 })
+
+export const {filterActiveAndInActive} = todoSlice.actions
 
 export default todoSlice.reducer

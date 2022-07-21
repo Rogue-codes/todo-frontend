@@ -85,6 +85,50 @@ function TableComponent({setTodo}) {
     // })
 
 
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd ;
+
+    const tody = new Date()
+    let tomorrow = new Date(tody)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    let dd2 = String(tomorrow.getDate()).padStart(2, '0');
+    let mm2 = String(tomorrow.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy2 = tomorrow.getFullYear();
+
+    tomorrow = yyyy2 + '-' + mm2 + '-' + dd2 ;
+
+    const tod = new Date()
+    let yesterday = new Date(tod)
+    yesterday.setDate(yesterday.getDate() - 1)
+    let yesDd = String(yesterday.getDate()).padStart(2, '0');
+    let yesMm = String(yesterday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yesYyyy = yesterday.getFullYear();
+
+    yesterday = yesYyyy + '-' + yesMm + '-' + yesDd ;
+
+    console.log(Date.parse(yesterday))
+
+    const filterTodo = todoState.todos.filter((item) =>{
+        if(todoState.filterStatus === 'false'){
+          return true
+        }else if(todoState.filterStatus === 'true'){
+          return item.isComplete 
+        }else if(todoState.filterStatus === 'critical'){
+            return item.priority === 'critical'
+        }else if(todoState.filterStatus === 'dueToday'){
+            return item.dateDue === today 
+        }else if(todoState.filterStatus === 'dueTomorrow'){
+            return item.dateDue === tomorrow 
+        }
+        else if(todoState.filterStatus === 'passedDue'){
+            return Date.parse(item.dateDue) <= Date.parse(yesterday) 
+        }
+        return null
+      })
 
 return (
     <Container>
@@ -114,7 +158,7 @@ return (
                     ):
                     
                     (
-                        todoState.todos?.map((td)=>
+                        filterTodo?.map((td)=>
                         
                     <Tr key={td.id} td={td} setTodo={setTodo} />
                         )

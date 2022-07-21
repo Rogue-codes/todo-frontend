@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { filterActiveAndInActive } from '../redux/todoSlice'
 
 const Header = styled.header`
     width: 100%;
@@ -20,23 +22,34 @@ const Right = styled.div`
 `
 
 function TodoHeader() {
+    const filterValue = useSelector((state) => state.todos.filterStatus)
+    const [filter,setFilter] = useState(filterValue)
+
+    const dispatch = useDispatch()
+    const handleChange = (e) => {
+        setFilter(e.target.value)
+        dispatch(filterActiveAndInActive(
+          e.target.value
+        ))
+      }
+
   return (
     <Header>
         <Left>
             <p>Task</p>
         </Left>
         <Right>
-            <select name="" id="">
-                <option>All Active</option>
-                <option>Completed</option>
+            <select value={filter} onChange={handleChange} name="" id="">
+                <option value={false}>All Active</option>
+                <option value={true}>Completed</option>
             </select>
 
-            <select name="" id="">
-                <option>filter</option>
-                <option>Critical</option>
-                <option>Due Today</option>
-                <option>Due Tomorrow</option>
-                <option>Passed Due</option>
+            <select value={filter} onChange={handleChange} name="" id="">
+                <option value='false'>filter</option>
+                <option value='critical'>Critical</option>
+                <option value='dueToday'>Due Today</option>
+                <option value='dueTomorrow'>Due Tomorrow</option>
+                <option value='passedDue'>Passed Due</option>
             </select>
         </Right>
     </Header>

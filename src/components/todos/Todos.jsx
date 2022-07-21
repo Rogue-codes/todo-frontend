@@ -16,7 +16,7 @@ function Todos() {
       author:'',
       priority:'',
       isComplete: false,
-      dateDue : new Date(),
+      dateDue : '',
   })
   return (
     <TodoContainer>

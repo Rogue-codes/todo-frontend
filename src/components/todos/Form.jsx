@@ -75,7 +75,7 @@ function Form({todo,setTodo}) {
         }else{
             const newTodo = {
                 ...todo, 
-                date : new Date()
+                date : Date().toLocaleString().split(',')[0]
             }
             dispatch(todoPost(
                 newTodo
@@ -106,8 +106,8 @@ function Form({todo,setTodo}) {
         <input value={todo.author} type="text" placeholder="description" onChange={(e)=>setTodo({...todo, author: e.target.value})}/>
         <select value={todo.priority} name="" id="" onChange={(e)=>setTodo({...todo, priority: e.target.value})}>
             <option value="">priority</option>
-            <option value="critical">critical</option>
-            <option value="normal">normal</option>
+            <option value="Important">Important</option>
+            <option value="normal">Medium</option>
         </select>
         <input value={todo.dateDue} type="date" placeholder='date created' onChange={(e)=>setTodo({...todo, dateDue: e.target.value})} />
         <button>{todo._id ? 'update task' : 'add task'}</button>

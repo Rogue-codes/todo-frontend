@@ -6,6 +6,7 @@ import { useTransition, animated } from 'react-spring'
 import {AiFillEdit,AiOutlineCheck} from 'react-icons/ai'
 import {RiDeleteBinLine} from 'react-icons/ri'
 import {todoDelete,todoToggle } from '../redux/todoSlice'
+import {CgDanger} from 'react-icons/cg'
 import {FaTimes} from 'react-icons/fa'
 import {IoAlert} from 'react-icons/io5'
 import { useDispatch} from 'react-redux'
@@ -16,6 +17,15 @@ import 'tippy.js/dist/tippy.css';
 
 const Row = styled.tr`
         position: relative;
+        .notification{
+            text-align: center;
+            font-size: 1vw;
+            font-style: italic;
+            color: red};
+        }
+        .strike{
+            text-decoration: line-through;
+        }
         .deleteModal{
             @media (max-width:480px) {
                 width: 90%;
@@ -25,7 +35,7 @@ const Row = styled.tr`
             width: 25%;
             position: fixed;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            height: 25vh;
+            height: auto;
             background: #fff;
             border-radius: 5px;
             z-index:150;
@@ -48,7 +58,7 @@ const Row = styled.tr`
             .delCancel{
                 width: 100%;
                 height: 10vh;
-                margin-top: 5%;
+                margin-top: 1%;
                 display: flex;
                 justify-content: flex-end;
                 gap: 5%;
@@ -72,6 +82,10 @@ const Row = styled.tr`
             justify-content: center;
             gap: 2%;
             align-items: center;
+        }
+        .due{
+            position: absolute;
+            left: 2%;
         }
         .modal{
             @media (max-width:480px) {
@@ -156,8 +170,8 @@ const Row = styled.tr`
                     width: 50%;
                     height: 100%;
                     p{
-                        font-size: 1.2vw;
-                        font-weight: 600;
+                        font-size: 1vw;
+                        padding-left: 13%;
                     }
                     span{
                         width: 80%;
@@ -166,14 +180,14 @@ const Row = styled.tr`
                         display: block;
                         background: rgb(240 240 240);
                         padding: 3%;
+                        font-size: 1vw;
                     }
                 }
                 .dateDue{
                     width: 50%;
                     height: 100%;
                     p{
-                        font-size: 1.2vw;
-                        font-weight: 600;
+                        font-size: 1vw;
                     }
                     span{
                         width: 90%;
@@ -182,6 +196,7 @@ const Row = styled.tr`
                         display: block;
                         background: rgb(240 240 240);
                         padding: 3%;
+                        font-size: 1vw;
                     }
                 }
             }
@@ -213,6 +228,15 @@ const Row = styled.tr`
 `
 function Tr({td,setTodo}) {
 
+    const tod = new Date()
+    let yesterday = new Date(tod)
+    yesterday.setDate(yesterday.getDate() - 1)
+    let yesDd = String(yesterday.getDate()).padStart(2, '0');
+    let yesMm = String(yesterday.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yesYyyy = yesterday.getFullYear();
+
+    yesterday = yesYyyy + '-' + yesMm + '-' + yesDd ;
+
     const dispatch = useDispatch()
 
     const [showModal, setShowModal] = useState(false)
@@ -222,8 +246,8 @@ function Tr({td,setTodo}) {
 
     const handleDelete =(_id) => {
         dispatch(todoDelete(_id))
-        // setShowModal(false)
         setShowDelModal(false)
+        setShowShadow(false)
     }
 
     const handleToggleComplete = (_id) => {
@@ -240,8 +264,19 @@ function Tr({td,setTodo}) {
     const hideTodoInfo = () => {
         setShowShadow(false)
         setShowModalTodo(false)
-
+        setShowDelModal(false)        
     }
+
+    const showDeleteModal = () => {
+        setShowShadow(true)
+        setShowDelModal(true)
+    }
+
+    const hideDeleteModal = () => {
+        setShowShadow(false)
+        setShowDelModal(false)
+    }
+
 
 
     const modalTransitions = useTransition(showModal, {
@@ -284,15 +319,17 @@ function Tr({td,setTodo}) {
         // onRest: () => set(!show),
     })
 
+
+
   return (
     <Row>
         <Tippy placement={'bottom'} arrow={false} content={<span style={{color:'rgb(240 240 240)', fontSize:'.7rem'}}>Task details:</span>}>
-            <td style={{cursor:'pointer'}} onClick={showTodoInfo}>{td.name}</td>
+            <td style={{cursor:'pointer'}} onClick={showTodoInfo} className={td.isComplete ? 'strike' : null}>{td.name}</td>
         </Tippy>
         <td>{td.priority}</td>
-        <td>{td.isComplete ? <span className='done_notdone'><AiOutlineCheck size='.8rem'  color='green'/>Done</span> : <span className='done_notdone'><IoAlert size='1rem'  color='orange'/>Not done</span>}</td>
+        <td>{td.isComplete ? <span className='done_notdone'><AiOutlineCheck size='.8rem'  color='green'/>Task Completed</span> : <span className='done_notdone'><IoAlert size='1rem'  color='orange'/>Task Pending</span>}</td>
         <td>{moment(td.date).fromNow()}</td>
-        <td>{moment(td.dateDue).format('DD/MM/YY')}</td>
+        <td><span>{Date.parse(td.dateDue) < Date.parse(td.date) ? <CgDanger className='due' size='1rem' color='red'/>:null}</span>{moment(td.dateDue).format('DD/MM/YY')}</td>
         <Tippy placement={'bottom'} arrow={false} content={<span style={{color:'rgb(240 240 240)', fontSize:'.7rem'}}>Task: {td.name}, more actions</span>}>
             <td>
                 <BiDotsHorizontalRounded size='1.2rem' cursor='pointer' onClick={()=>setShowModal(!showModal)}/>
@@ -301,9 +338,9 @@ function Tr({td,setTodo}) {
         {
             modalTransitions(
             (styles, item, ) => item && <animated.div style={styles} className='modal' onMouseOver={()=>{setShowModal(true)}} onMouseOut={()=>{setShowModal(false)}}>
-                <div className="ico"  onClick={()=>setShowDelModal(true)}><RiDeleteBinLine size='1rem'  color='grey'/> <p>delete</p></div>
+                <div className="ico"  onClick={showDeleteModal}><RiDeleteBinLine size='1rem'  color='grey'/> <p>delete</p></div>
                 <div className="ico" onClick={()=>setTodo(td)}><AiFillEdit size='1rem'  color='grey' /> <p>edit</p></div>
-                <div className="ico" onClick={()=>handleToggleComplete(td._id)}><AiOutlineCheck size='1rem'  color='grey'/><p>check</p></div>
+                <div className="ico" onClick={()=>handleToggleComplete(td._id)}><AiOutlineCheck size='1rem'  color='grey'/><p>{td.isComplete ? 'uncheck' : "check"}</p></div>
             </animated.div>
             )
         }
@@ -327,15 +364,24 @@ function Tr({td,setTodo}) {
                         <span>{td.priority}</span>
                     </div>
                     <div className="dateDue">
+                        <p>Status:</p>
+                        <span>{td.isComplete ? 'Task Completed' : 'Task not completed'}</span>
+                    </div>
+                    <div className="dateDue">
                         <p>Date due:</p>
                         <span>{td.dateDue}</span>
                     </div>
                 </div>
 
-                <p style={{padding:'1% 2%'}}>Description:</p>
+                <p style={{padding:'1% 7%', fontSize:'1vw'}}>Description:</p>
                 <div className="desc">
                     <p>{td.author}</p>
                 </div>
+
+                <p className='notification'
+                cl={Date.parse(td.dateDue) <= Date.parse(yesterday) ? 'red' : "green"}
+                >{Date.parse(td.dateDue) <= Date.parse(yesterday) ? 'This Task is passed due' : 
+                null}</p>
 
                 <FaTimes className='cncel' onClick={hideTodoInfo}/>
             </animated.div>
@@ -348,7 +394,7 @@ function Tr({td,setTodo}) {
               <p>You won't be able to undo this action.</p>
 
               <div className="delCancel">
-                <button onClick={()=>setShowDelModal(false)}>Cancel</button>
+                <button onClick={hideDeleteModal}>Cancel</button>
                 <button onClick={()=>handleDelete(td._id)}>Delete</button>
               </div>
 
