@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import {FaUserAlt} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useTransition, animated } from 'react-spring'
+import { useDispatch, useSelector } from 'react-redux'
+import { logOutUser } from '../redux/authSlice'
 
 const NavBar = styled.nav`
     width: 100%;
@@ -24,6 +26,7 @@ const NavBar = styled.nav`
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         left: 92%;
         top: 9%;
+        z-index: 50;
         a{
             display: block;
             padding: 4%;
@@ -44,6 +47,8 @@ const Right = styled.div`
 `
 function Nav() {
     const [showMenu, setShowMenu]= useState(false)
+    const auth = useSelector((state)=>state.auth)
+    const dispatch = useDispatch()
 
     const menuTransitions = useTransition(showMenu, {
         from: { opacity: 0 },
@@ -67,9 +72,11 @@ function Nav() {
         {
         menuTransitions(
         (styles, item) => item && <animated.div style={styles} className='animate' onMouseOut={()=>{setShowMenu(false)}} onMouseOver={()=>{setShowMenu(true)}}>
-            <Link to='/signIn'>sign In</Link>
-            <Link to='/signUp'>Sign Up</Link>
-            <Link to='/'>Sign Out</Link>
+            {auth._id ? (<Link to='/' onClick={()=>{
+              dispatch(logOutUser(null))
+              alert('logged out')
+            }}>log Out</Link>) : (<Link to='/signIn'>sign In</Link>) }
+            {/* <Link to='/signUp'>Sign Up</Link> */}
         </animated.div>
         )
       }

@@ -1,8 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 
+// base url where we are sending our report to.
 const baseUrl = 'http://localhost:5000/api/'
 
+// initial state
 const initialState = {
     todos:[],
     addTodoStatus:'',
@@ -18,6 +20,7 @@ const initialState = {
     filterStatus: "false",
 }
 
+// make post request from clientside to DB
 export const todoPost = createAsyncThunk(
     'todo/todoPost',
     async(todo, {rejectWithValue} )=>{
@@ -32,6 +35,7 @@ export const todoPost = createAsyncThunk(
     }
 )
 
+// getting data from db and displaying them on our clientside
 export const todoFetch = createAsyncThunk(
     "todo/todoFetch",
     async (id=null, {rejectWithValue})=>{
@@ -45,6 +49,7 @@ export const todoFetch = createAsyncThunk(
     }
 )
 
+// making a put request(updating our todo)
 export const todoUpdate = createAsyncThunk(
     'todos/todoUpdate',
     async (todo, {rejectWithValue}) =>{
@@ -62,6 +67,7 @@ export const todoUpdate = createAsyncThunk(
 
 )
 
+// Deleting our todos from DB
 export const todoDelete = createAsyncThunk(
     'todo/tododelete',
     async (_id, {rejectWithValue}) => {
@@ -75,6 +81,7 @@ export const todoDelete = createAsyncThunk(
     }
 )
 
+// toggle todo status (complete/incomplete)
 export const todoToggle = createAsyncThunk(
     "todo/todoToggle",
     async (_id, {rejectWithValue}) =>{
@@ -87,6 +94,8 @@ export const todoToggle = createAsyncThunk(
         }
     }
 )
+
+// todo slice
 const todoSlice = createSlice({
     name: 'todo',
     initialState,

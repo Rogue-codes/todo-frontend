@@ -11,18 +11,16 @@ const Container = styled.div`
     @media (max-width:480px) {
       overflow: scroll
     }
-    /* position: relative;
-    .shadow{
-        width: 100%;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 90;
-        background-color: #010214a6;
-    } */
 `
 const Table = styled.table`
+    .none{
+        @media (max-width:480px) {
+        display: none;
+    }
+    }
+    @media (max-width:480px) {
+        width: 100%;
+    }
     width: 80%;
     margin: auto;
     margin-top: 2%;
@@ -33,7 +31,7 @@ const Table = styled.table`
     }
     th{
         @media (max-width:480px) {
-        font-size: .7rem;
+        font-size: .7rem   
         }
         height: 8vh;
         background:#fff;
@@ -41,6 +39,9 @@ const Table = styled.table`
         font-size: 1vw;
     }
     td{
+        @media (max-width:480px) {
+            font-size: 1rem;
+        }
         text-align: center;
         font-size: 1vw;
     }
@@ -65,7 +66,6 @@ const Table = styled.table`
 function TableComponent({setTodo}) {
     const todoState = useSelector((state) => state.todos)
     const dispatch = useDispatch()
-    // const [showShadow, setShowShadow]= useState(false)
 
 
 
@@ -73,16 +73,6 @@ function TableComponent({setTodo}) {
         dispatch(todoFetch())
     },[dispatch])
 
-
-    // const maskTransitions = useTransition(showShadow, {
-    //     from: { opacity: 0 },
-    //     enter: { opacity: 1 },
-    //     leave: { opacity: 0 },
-    //     reverse: showShadow,
-    //     delay: 200,
-    //     // config: config.molasses,
-    //     // onRest: () => set(!show),
-    // })
 
 
     let today = new Date();
@@ -117,8 +107,10 @@ function TableComponent({setTodo}) {
           return true
         }else if(todoState.filterStatus === 'true'){
           return item.isComplete 
+        }else if(todoState.filterStatus === 'pending'){
+            return !item.isComplete 
         }else if(todoState.filterStatus === 'critical'){
-            return item.priority === 'critical'
+            return item.priority === 'Important'
         }else if(todoState.filterStatus === 'dueToday'){
             return item.dateDue === today 
         }else if(todoState.filterStatus === 'dueTomorrow'){
@@ -136,10 +128,10 @@ return (
             <thead>
                 <tr>
                 <th>Task Title</th>
-                <th>Priority</th>
+                <th className='none'>Priority</th>
                 <th>Status</th>
-                <th>Date Created</th>
-                <th>Date Due</th>
+                <th className='none'>Date Created</th>
+                <th className='none'>Date Due</th>
                 <th>Operations</th>
                 </tr>
             </thead><br />
@@ -169,14 +161,6 @@ return (
 
             </tbody>
         </Table>
-
-        {/* {
-            maskTransitions(
-            (styles, item) => item && <animated.div style={styles} className='shadow' onClick={()=> setShowShadow(false)}>
-
-            </animated.div>
-            )
-        } */}
         
     </Container>
   )

@@ -18,6 +18,9 @@ import 'tippy.js/dist/tippy.css';
 const Row = styled.tr`
         position: relative;
         .notification{
+            @media (max-width:480px) {
+                font-size: 1rem;
+            }
             text-align: center;
             font-size: 1vw;
             font-style: italic;
@@ -25,12 +28,15 @@ const Row = styled.tr`
         }
         .strike{
             text-decoration: line-through;
+            &:hover {
+                text-decoration: underline;
+            }
         }
         .deleteModal{
             @media (max-width:480px) {
-                width: 90%;
-                margin-left: 5%;
-                top: 5%;
+                width: 80%;
+                left: 10%;
+                top: 20%;
             }
             width: 25%;
             position: fixed;
@@ -43,6 +49,9 @@ const Row = styled.tr`
             top:37.5%;
             align-items: center;
             h2{
+                @media (max-width:480px) {
+                    font-size: 1rem;
+                }
                 font-size: 1vw;
                 margin-top: 2%;
                 padding: 2%;
@@ -50,6 +59,9 @@ const Row = styled.tr`
                 font-weight: 500;
             }
             p{
+                @media (max-width:480px) {
+                    font-size: 1rem;
+                }
                 font-size: 1vw;
                 padding: 2%;
                 color: #444791;
@@ -82,6 +94,11 @@ const Row = styled.tr`
             justify-content: center;
             gap: 2%;
             align-items: center;
+            p{
+                @media (max-width:480px) {
+                    display: none;
+                }
+            }
         }
         .due{
             position: absolute;
@@ -89,9 +106,9 @@ const Row = styled.tr`
         }
         .modal{
             @media (max-width:480px) {
-                width: 90%;
-                margin-left: 5%;
-                top: 5%;
+                width: 40%;
+                left: 55%;
+                top: 25%;
             }
             width: 15%;
             position: absolute;
@@ -127,9 +144,11 @@ const Row = styled.tr`
         }
         .modalInfo{
             @media (max-width:480px) {
-                width: 90%;
-                margin-left: 5%;
-                top: 5%;
+                width: 80%;
+                left: 10%;
+                top: 10%;
+                height: 60vh;
+                overflow: auto
             }
             width: 40%;
             position: fixed;
@@ -156,10 +175,20 @@ const Row = styled.tr`
                 }
             }
             ul{
+                @media (max-width:480px) {
+                    text-align: center;
+                    list-style-type: none;
+                }
                 margin-left: 5%;
                 margin-top: 2%;
             }
             .pd{
+                @media (max-width:480px) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-bottom: 15%;
+                    height: auto;
+                }
                 width: 100%;
                 height: 15vh;
                 display: flex;
@@ -167,13 +196,24 @@ const Row = styled.tr`
                 padding: 2%;
                 align-items: center;
                 .priority{
+                    @media (max-width:480px) {
+                        width: 100%;
+                    }
                     width: 50%;
                     height: 100%;
                     p{
+                        @media (max-width:480px) {
+                            font-size: 1rem;
+                            padding-left: 2%;
+                        }
                         font-size: 1vw;
                         padding-left: 13%;
                     }
                     span{
+                        @media (max-width:480px) {
+                            font-size: 1rem;
+                            width: 100%;
+                        }
                         width: 80%;
                         margin: auto;
                         margin-top: 5%;
@@ -184,12 +224,22 @@ const Row = styled.tr`
                     }
                 }
                 .dateDue{
+                    @media (max-width:480px) {
+                        width: 100%;
+                    }
                     width: 50%;
                     height: 100%;
                     p{
+                        @media (max-width:480px) {
+                            font-size: 1rem;
+                        }
                         font-size: 1vw;
                     }
                     span{
+                        @media (max-width:480px) {
+                            font-size: 1rem;
+                            width: 100%;
+                        }
                         width: 90%;
                         margin: auto;
                         margin-top: 5%;
@@ -207,6 +257,9 @@ const Row = styled.tr`
                 margin: auto;
                 background: rgb(240 240 240);
                 p{
+                    @media (max-width:480px) {
+                        font-size: 1rem;
+                    }
                     padding: 2%;
                     font-size: 1vw;
                 }
@@ -215,7 +268,6 @@ const Row = styled.tr`
         &:hover {
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         }
-        position: relative;
         .shadow{
             width: 100%;
             height: 100vh;
@@ -225,8 +277,13 @@ const Row = styled.tr`
             z-index: 90;
             background-color: #010214a6;
         }
+    td{
+        @media (max-width:480px) {
+            font-size: .7rem;
+        }
+    }
 `
-function Tr({td,setTodo}) {
+    function Tr({td,setTodo}) {
 
     const tod = new Date()
     let yesterday = new Date(tod)
@@ -324,12 +381,12 @@ function Tr({td,setTodo}) {
   return (
     <Row>
         <Tippy placement={'bottom'} arrow={false} content={<span style={{color:'rgb(240 240 240)', fontSize:'.7rem'}}>Task details:</span>}>
-            <td style={{cursor:'pointer'}} onClick={showTodoInfo} className={td.isComplete ? 'strike' : null}>{td.name}</td>
+            <td style={{cursor:'pointer'}} onClick={showTodoInfo}>{td.name}</td>
         </Tippy>
-        <td>{td.priority}</td>
-        <td>{td.isComplete ? <span className='done_notdone'><AiOutlineCheck size='.8rem'  color='green'/>Task Completed</span> : <span className='done_notdone'><IoAlert size='1rem'  color='orange'/>Task Pending</span>}</td>
-        <td>{moment(td.date).fromNow()}</td>
-        <td><span>{Date.parse(td.dateDue) < Date.parse(td.date) ? <CgDanger className='due' size='1rem' color='red'/>:null}</span>{moment(td.dateDue).format('DD/MM/YY')}</td>
+        <td className='none'>{td.priority}</td>
+        <td>{td.isComplete ? <span className='done_notdone'><AiOutlineCheck size='.8rem'  color='green'/><p>Task Completed</p></span> : <span className='done_notdone'><IoAlert size='1rem'  color='orange'/><p>Task Pending</p></span>}</td>
+        <td className='none'>{moment(td.date).fromNow()}</td>
+        <td className='none'><span>{Date.parse(td.dateDue) < Date.parse(td.date) ? <CgDanger className='due' size='1rem' color='red'/>:null}</span>{moment(td.dateDue).format('DD/MM/YY')}</td>
         <Tippy placement={'bottom'} arrow={false} content={<span style={{color:'rgb(240 240 240)', fontSize:'.7rem'}}>Task: {td.name}, more actions</span>}>
             <td>
                 <BiDotsHorizontalRounded size='1.2rem' cursor='pointer' onClick={()=>setShowModal(!showModal)}/>
@@ -373,7 +430,7 @@ function Tr({td,setTodo}) {
                     </div>
                 </div>
 
-                <p style={{padding:'1% 7%', fontSize:'1vw'}}>Description:</p>
+                <p style={{padding:'1% 7%', fontSize:'.7rem'}}>Description:</p>
                 <div className="desc">
                     <p>{td.author}</p>
                 </div>

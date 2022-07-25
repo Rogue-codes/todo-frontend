@@ -4,6 +4,13 @@ import styled from 'styled-components'
 import { todoPost, todoUpdate } from '../redux/todoSlice'
 
 const FormCont = styled.form`
+    @media (max-width:480px) {
+        flex-direction: column;
+        height: auto;
+        margin: 0;
+        align-items: flex-start;
+        width: 100%;
+    }
     width: 85%;
     height: 15vh;
     margin: auto;
@@ -13,6 +20,11 @@ const FormCont = styled.form`
     position: relative;
     padding: 2%;
     input{
+        @media (max-width:480px) {
+            width: 100%;
+            min-height: 8vh;
+            margin-bottom: 5%;
+        }
         width: 20%;
         height: 6vh;
         border: none;
@@ -23,6 +35,11 @@ const FormCont = styled.form`
         }
     }
     select{
+        @media (max-width:480px) {
+            width: 100%;
+            min-height: 8vh;
+            margin-bottom: 5%;
+        }
         width: 20%;
         height: 6vh;
         border: none;
@@ -33,6 +50,11 @@ const FormCont = styled.form`
         }
     }
     button{
+        @media (max-width:480px) {
+            width: 100%;
+            min-height: 8vh;
+            margin-bottom: 5%;
+        }
         margin-left: 1%;
         width: 10%;
         height: 6vh;
@@ -47,6 +69,10 @@ const FormCont = styled.form`
     }
 `
 const Modal = styled.div`
+    @media (max-width:480px) {
+        width: 90%;
+        margin-left: 5%;
+    }
     width: 30%;
     height: 5vh;
     position: fixed;
@@ -69,7 +95,8 @@ function Form({todo,setTodo}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
+        
+        //checking if our todo has an ID so we can use it to update the todo.
         if(todo._id){
             dispatch(todoUpdate(todo))
         }else{

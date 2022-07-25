@@ -4,7 +4,9 @@ import './index.css';
 import {store} from './components/redux/store'
 import App from './App';
 import { Provider } from 'react-redux';
+import { loadUser } from './components/redux/authSlice';
 
+store.dispatch(loadUser(null))
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

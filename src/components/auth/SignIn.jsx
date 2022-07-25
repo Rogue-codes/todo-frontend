@@ -1,6 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { loginUser } from '../redux/authSlice'
 const SignInContainer = styled.div`
     width: 100%;
     min-height: 90vh;
@@ -19,6 +21,11 @@ const Form = styled.form`
     margin-top: 8%;
     margin-left: 4%;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    .error{
+        color: red;
+        font-weight: 400;
+        padding-top: 2px;
+    }
     p{
         text-align: center;
         padding-top:8%;
@@ -54,13 +61,34 @@ const Form = styled.form`
     }
 `
 function SignIn() {
+    const auth = useSelector((state) => state.auth)
+    const navigate = useNavigate()
+    const [value,setValue] = useState({
+        email: '',
+        password: '',
+    })
+
+    useEffect(()=>{
+        if(auth._id){
+            navigate('/')
+        }
+    },[auth._id,navigate])
+
+    const dispatch = useDispatch()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        dispatch(loginUser(value))
+        console.log(auth)
+
+    }
   return (
     <SignInContainer>
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <p>Login to your account</p>
-            <input placeholder="E-mail Address" type="text" />
-            <input  placeholder='Password' type="text" />
+            <input placeholder="E-mail Address" value={value.email} type="email" onChange={(e)=>setValue({...value, email: e.target.value})}  />
+            <input  placeholder='Password' type="password" value={value.password} onChange={(e)=>setValue({...value, password: e.target.value})} />
             <button>Login</button>
+            {auth.loginStatus === 'rejected' ? (<p className='error'>{auth.loginError}</p>): null}
             <p>Don't have an account?, sign up <Link to='/signUp'>here</Link></p>
         </Form>
     </SignInContainer>
