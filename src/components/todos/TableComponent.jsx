@@ -1,11 +1,9 @@
-import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {todoFetch} from '../redux/todoSlice'
-// import { useTransition, animated } from 'react-spring'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel'
 import Tr from './Tr'
-
 
 const Container = styled.div`
     @media (max-width:480px) {
@@ -47,6 +45,14 @@ const Table = styled.table`
     }
     tbody{
         position: relative;
+        .loader{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading{
+            width: 100px;
+        }
         tr{
             background:#fff;
             height: 6vh; 
@@ -63,7 +69,7 @@ const Table = styled.table`
     }
 `
 
-function TableComponent({setTodo}) {
+function TableComponent({setTodo,setTheme}) {
     const todoState = useSelector((state) => state.todos)
     const dispatch = useDispatch()
 
@@ -124,7 +130,14 @@ function TableComponent({setTodo}) {
 
 return (
     <Container>
-         <Table>
+            <ReactHTMLTableToExcel
+            id="test-table-xls-button"
+            className="download-table-xls-button"
+            table="table-to-xls"
+            filename="tablexls"
+            sheet="tablexls"
+            buttonText="Download as XLS"/>
+         <Table id="table-to-xls">
             <thead>
                 <tr>
                 <th>Task Title</th>
@@ -139,13 +152,13 @@ return (
             <tbody>
                 {
                     todoState.fetchTodoStatus === 'pending' ?
-                    (<p>Loading.....</p>):
+                    (<div className='loader'><p>Loading.....</p><img className='loading' src="/loading.gif" alt="" /></div>):
                     todoState.fetchTodoStatus === 'rejected' ?
                     (<p>An error occurred, can't get task</p>):
                     todoState.todos && todoState.todos.length <= 0 ?
                     (
                         <>
-                            <p style={{  fontSize:'1vw', width: '100%', marginLeft:'100%' }}>You have no active task.</p>
+                            <p style={{  fontSize:'1vw', width: '100%', marginLeft:'100%' }}>You have no task.</p>
                         </>
                     ):
                     
@@ -161,7 +174,6 @@ return (
 
             </tbody>
         </Table>
-        
     </Container>
   )
 }

@@ -35,7 +35,7 @@ function Todos() {
       <Sidebar sideBar={sideBar} setSideBar={setSideBar} />
       <Main ps={sideBar ? '80%' : "100%"} ml={sideBar ? '20%' : "0%"}>
           <TodoHeader setSideBar={setSideBar} sideBar={sideBar} />
-          <Form todo={todo} setTodo={setTodo}/>
+          <Form todo={todo}  setTodo={setTodo}/>
           <TableComponent setTodo={setTodo}/>
       </Main>
     </TodoContainer>

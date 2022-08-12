@@ -95,8 +95,10 @@ function Form({todo,setTodo}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
-        //checking if our todo has an ID so we can use it to update the todo.
+        if(todo.name < 3){
+            alert('name must be atleast 3 characters long')
+        }else{
+            //checking if our todo has an ID so we can use it to update the todo.
         if(todo._id){
             dispatch(todoUpdate(todo))
         }else{
@@ -124,6 +126,7 @@ function Form({todo,setTodo}) {
         setTimeout(() => {
             setPending(false)
         },5000)
+        }
     }
 
     console.log(todo)
@@ -153,7 +156,7 @@ function Form({todo,setTodo}) {
             statusMsg.updateTodoStatus === 'pending' ? (<p>Loading</p>) : null
         }
         {
-            statusMsg.updateTodoStatus === 'rejected' ? (<p>{statusMsg.addTodoError}</p>) : null
+            statusMsg.updateTodoStatus === 'rejected' ? (<p>{statusMsg.updateTodoError}</p>) : null
         }
         {
             statusMsg.updateTodoStatus === 'success' ? (<p>Task Updated</p>) : null
