@@ -66,7 +66,7 @@ function Nav() {
         </Left>
 
         <Right>
-            <FaUserAlt size='1.2rem' color='white' onClick={()=>setShowMenu(!showMenu)}/>
+           {auth.name} <FaUserAlt size='1.2rem' color='white' onClick={()=>setShowMenu(!showMenu)}/>
         </Right>
 
         {

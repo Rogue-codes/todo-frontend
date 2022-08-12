@@ -8,3 +8,14 @@
 body{
   background: rgb(240 240 240);
 }
+.download-table-xls-button{
+  background: #444791;
+  margin: 1%;
+  padding: .5% 3%;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 82%;
+}

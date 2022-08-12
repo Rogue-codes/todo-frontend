@@ -79,7 +79,7 @@ function Charts() {
         <PieCont>
             <Pie data={data}  />
         </PieCont>
-        <p>{pending.length > completed.length ? 'Over 50% of your tasks are incomplete.':` You've completed over 60% of your tasks great job!!`} </p>
+        <p>{pending.length > completed.length ? 'Over 50% of your tasks are incomplete.':` You've completed over 60% of your tasks great job!!...`} </p>
     </Cont>
   )
 }

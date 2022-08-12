@@ -24,13 +24,7 @@ const Row = styled.tr`
             text-align: center;
             font-size: 1vw;
             font-style: italic;
-            color: red};
-        }
-        .strike{
-            text-decoration: line-through;
-            &:hover {
-                text-decoration: underline;
-            }
+            color: red
         }
         .deleteModal{
             @media (max-width:480px) {
@@ -422,7 +416,7 @@ const Row = styled.tr`
                     </div>
                     <div className="dateDue">
                         <p>Status:</p>
-                        <span>{td.isComplete ? 'Task Completed' : 'Task not completed'}</span>
+                        <span>{td.isComplete ? 'Completed' : 'Pending'}</span>
                     </div>
                     <div className="dateDue">
                         <p>Date due:</p>

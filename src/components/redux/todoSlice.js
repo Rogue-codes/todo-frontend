@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
+// import { setHeaders } from '../api'
 
 // base url where we are sending our report to.
 const baseUrl = 'http://localhost:5000/api/'
@@ -53,15 +54,16 @@ export const todoFetch = createAsyncThunk(
 export const todoUpdate = createAsyncThunk(
     'todos/todoUpdate',
     async (todo, {rejectWithValue}) =>{
+        
+        const {_id, name, isComplete, priority, author, date} = todo
         try{
-           const {_id, name, isComplete, priority,author, date} = todo
 
            const res = await axios.put(baseUrl + 'todos/' + _id, {name, isComplete, priority, author, date})
 
            return res.data
         }catch(err){
             console.log(err)
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.res.data)
         }
     }
 
@@ -76,7 +78,7 @@ export const todoDelete = createAsyncThunk(
             return res.data
         }catch(err){
             console.log(err)
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.res.data)
         }
     }
 )
@@ -178,7 +180,7 @@ const todoSlice = createSlice({
                 addTodoStatus:'',
                 addTodoError: '',
                 fetchTodoStatus:'rejected',
-                fetchTodoError:'action.payload',
+                fetchTodoError: action.payload,
                 updateTodoStatus:'',
                 updateTodoError:'',
                 deleteTodoStatus:'',

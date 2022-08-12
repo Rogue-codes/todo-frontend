@@ -8,7 +8,6 @@ import {CgDanger} from 'react-icons/cg'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import {FaTimes} from 'react-icons/fa'
-import { Link } from 'react-router-dom'
 
 const Side = styled.aside`
     @media (max-width:480px) {
@@ -155,7 +154,7 @@ function Sidebar({sideBar,setSideBar}) {
             <CgDanger size='1.5rem'/><p>Important Tasks : <b>{important.length}</b></p>
         </div>
 
-        <Link to='/charts'><button>GET INSIGHTS</button></Link>
+        {/* <Link to='/charts'><button>GET INSIGHTS</button></Link> */}
         
     </Side>
   )
